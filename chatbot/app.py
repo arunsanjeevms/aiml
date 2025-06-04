@@ -47,7 +47,7 @@ def home():
 
 @app.route("/get", methods=["GET"])
 def chatbot_response():
-    user_input = request.args.get('msg')  # Get user input from the request
+    user_input = request.args.get('msg') 
     response = chatbot.respond(user_input)
     return response
 
