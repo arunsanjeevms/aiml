@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MKCE Chatbot</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+.chat-container {
+    width: 400px;
+    background: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+}
+.chat-container h1 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #007bff;
+}
+.chat-messages {
+    height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    text-align: left;
+}
+.input-container {
+    display: flex;
+    gap: 10px;
+}
+.input-container input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+.input-container button {
+    padding: 10px;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.input-container button:hover {
+    background: #0056b3;
+}
+</style>
+</head>
+<body>
+<div class="chat-container">
+<h1>M.Kumarasamy College of Engineering</h1>
+<div class="chat-messages" id="chat-messages"></div>
+<div class="input-container">
+<input type="text" id="user-input" placeholder="Type your message here..." />
+<button onclick="sendMessage()">Send</button>
+</div>
+</div>
+<script>
+function sendMessage() {
+    const userInput = document.getElementById("user-input");
+    const messages = document.getElementById("chat-messages");
+    if (userInput.value.trim() === "") return;
+    const userMessage = document.createElement("div");
+    userMessage.textContent = "You: " + userInput.value;
+    messages.appendChild(userMessage);
+    fetch(`/get?msg=${encodeURIComponent(userInput.value)}`, {
+        method: "GET",
+    })
+    .then((response) => response.text())
+    .then((data) => {
+        const botMessage = document.createElement("div");
+        botMessage.textContent = "Bot: " + data;
+        messages.appendChild(botMessage);
+        messages.scrollTop = messages.scrollHeight;
+    });
+    userInput.value = "";
+}
+</script>
+</body>
+</html>
